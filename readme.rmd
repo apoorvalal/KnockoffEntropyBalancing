@@ -1,9 +1,12 @@
 ---
-title: "Entropy Balancing in High Dimensions"
-author: Apoorva Lal
-date: \today
-output: md_document
+output:
+  md_document:
+    variant: gfm
 ---
+
+# Entropy Balancing in High Dimensions
+
+**Apoorva Lal**
 
 Minimal working example of Double-LASSO augmented entropy balancing estimator
 proposed in Lal (2021).
@@ -28,6 +31,8 @@ summary(robustify(felm(re78 ~ treat, lalonde.exp)))$coefficients[2, 1:2]
 
 Estimation akin to Dehejia & Wahba (1999).
 
+### Traditional Estimators
+
 ```{r}
 data(lalonde.psid)
 dtpsid = data.table(lalonde.psid)
@@ -43,6 +48,8 @@ lr_est = rbind(dm_est, cov_est, ipw_est, eb_est)
 rownames(lr_est) = c('difference in means', 'regression', 'ipw', 'entropy balancing')
 ```
 
+### Double LASSO and Knockoff EB
+
 ```{r}
 y = 're78'
 w =  'treat'
@@ -57,8 +64,8 @@ X = data[[3]]
 hdres = estimate_hdc(y, w, X)
 ```
 
-
 ## final estimates
+
 ```{r}
 rbind(lr_est, hdres)
 ```
