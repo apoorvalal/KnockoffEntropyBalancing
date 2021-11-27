@@ -26,7 +26,7 @@ source("estimators.R")
     ##  [9,] "caret"      TRUE  
     ## [10,] "kosel"      TRUE
 
-PSID experimental benchmark
+experimental benchmark (Lalonde 86)
 ---------------------------
 
 ``` r
