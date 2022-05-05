@@ -16,13 +16,12 @@ rm(list = ls())
 library(LalRUtils)
 set.seed(42)
 # paths
-source("estimators.R")
+source("/home/alal/Desktop/code/00_causal/KnockoffEntropyBalancing/estimators.R")
 ```
 
 ## PSID experimental benchmark
 
 ```{r}
-library(causalsens)
 data(lalonde.exp)
 summary(robustify(felm(re78 ~ treat, lalonde.exp)))$coefficients[2, 1:2]
 ```
@@ -36,9 +35,9 @@ Estimation akin to Dehejia & Wahba (1999).
 ```{r}
 data(lalonde.psid)
 dtpsid = data.table(lalonde.psid)
-y = 're78'
-w =  'treat'
+y = 're78'; w =  'treat'
 x = setdiff(colnames(lalonde.psid), c(y, w))
+
 # %% traditional estimators
 dm_est  = diffmeans(dtpsid, y, w)
 cov_est = covaradjust(dtpsid, y, w, x)
@@ -46,6 +45,7 @@ ipw_est = ipw_reg(dtpsid, y, w, x)
 eb_est = eb_reg(dtpsid, y, w, x)
 lr_est = rbind(dm_est, cov_est, ipw_est, eb_est)
 rownames(lr_est) = c('difference in means', 'regression', 'ipw', 'entropy balancing')
+lr_est
 ```
 
 ### Double LASSO and Knockoff EB

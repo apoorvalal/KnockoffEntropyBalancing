@@ -1,6 +1,6 @@
 # %% ####################################################
 library(LalRUtils)
-LalRUtils::libreq(tidyverse, data.table, hdm, ebal, glue, rlist,
+LalRUtils::libreq(data.table, hdm, ebal, glue,
                   lfe, janitor, caret, kosel)
 
 # %% prepare X matrix only
