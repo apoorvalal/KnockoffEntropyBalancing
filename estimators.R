@@ -3,6 +3,15 @@ library(LalRUtils)
 LalRUtils::libreq(data.table, hdm, ebal, glue,
                   lfe, janitor, caret, kosel)
 
+# %%
+koSelect = function(X, y, w){
+  y_ko       = kosel::ko.glm(X, scale(y));
+  y_selected = kosel::ko.sel(y_ko)$estimation
+  w_ko       = kosel::ko.glm(X, w);
+  w_selected = kosel::ko.sel(w_ko)$estimation
+  union(which(y_selected != 0), which(w_selected != 0))
+}
+
 # %% prepare X matrix only
 prep_matrix = function(
     dummies, # dummy vars
@@ -69,7 +78,7 @@ prep_matrices = function(
     polynomial_dfs[[i]] = dat[, ..controls]^i
     names(polynomial_dfs[[i]]) = paste0(controls, glue::glue("_{i}"))
   }
-  polynomials = list.cbind(polynomial_dfs) %>% as.matrix()
+  polynomials = do.call(cbind, polynomial_dfs) %>% as.matrix()
   data = cbind(dat[, ..controls], polynomials)
   # all n-way interactions with polynomials
   X = model.matrix(as.formula(glue::glue("~.^{k} - 1")), data)
